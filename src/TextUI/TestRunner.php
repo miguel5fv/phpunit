@@ -459,10 +459,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $suite->run($result);
 
         if (isset($arguments['failUnder'])) {
-            $codeCoverageCheckerFactory = new PHPUnit_Framework_CodeCoverage_FactoryChecker($suite, $result);
-            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Class')->isUnderLimit($arguments['failUnder']);
-            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Method')->isUnderLimit($arguments['failUnder']);
-            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Line')->isUnderLimit($arguments['failUnder']);
+            $codeCoverageCheckerFactory = new PHPUnit_Framework_CodeCoverage_FactoryChecker();
+            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Class', $suite, $result)->isUnderLimit($arguments['failUnder']);
+            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Method', $suite, $result)->isUnderLimit($arguments['failUnder']);
+            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Line', $suite, $result)->isUnderLimit($arguments['failUnder']);
         }
 
         unset($suite);

@@ -14,52 +14,42 @@
 class PHPUnit_Framework_CodeCoverage_FactoryChecker
 {
     /**
-     * @var PHPUnit_Framework_Test
-     */
-    private $suite;
-    /**
-     * @var PHPUnit_Framework_TestResult
-     */
-    private $result;
-
-    /**
-     * PHPUnit_Framework_CodeCoverage_Factory constructor.
+     * Creates an instance of a code coverage checker for a given test suit
+     * and adding the results into a given test result.
      *
+     * @param string $name
      * @param PHPUnit_Framework_Test $suite
      * @param PHPUnit_Framework_TestResult $result
+     *
+     * @return PHPUnit_Framework_CodeCoverage_Type
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct(
+    public function getCodeCoverageCheckerFor(
+        $name,
         PHPUnit_Framework_Test $suite,
         PHPUnit_Framework_TestResult $result
     )
     {
-        $this->suite = $suite;
-        $this->result = $result;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return PHPUnit_Framework_CodeCoverage_Type
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function getCodeCoverageCheckerFor($name)
-    {
         $candidateClassName = $this->getClassNameCandidate($name);
-        return $this->createHandler($candidateClassName);
+        return $this->createHandler($candidateClassName, $suite, $result);
     }
 
     /**
      * @param string $candidateClassName
+     * @param PHPUnit_Framework_Test $suite
+     * @param PHPUnit_Framework_TestResult $result
      *
      * @return PHPUnit_Framework_CodeCoverage_Type
      *
      * @throws \InvalidArgumentException
      */
-    private function createHandler($candidateClassName)
+    private function createHandler(
+        $candidateClassName,
+        PHPUnit_Framework_Test $suite,
+        PHPUnit_Framework_TestResult $result)
     {
-        $candidateForCodeCoverageChecker = new $candidateClassName($this->suite, $this->result);
+        $candidateForCodeCoverageChecker = new $candidateClassName($suite, $result);
         if ($candidateForCodeCoverageChecker instanceof PHPUnit_Framework_CodeCoverage_Type)
         {
             return $candidateForCodeCoverageChecker;
